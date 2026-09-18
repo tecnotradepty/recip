@@ -8,7 +8,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     body {
@@ -20,16 +20,6 @@
       font-family: 'Caveat', cursive;
     }
 
-    /* Background image fixed to avoid mobile zoom issues */
-    .fixed-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -10;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     /* Hide scrollbar for the UI screen */
     .hide-scrollbar::-webkit-scrollbar {
       width: 4px;
@@ -38,7 +28,7 @@
       background: rgba(0,0,0,0.1);
     }
     .hide-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.15);
+      background: rgba(59, 130, 246, 0.4);
       border-radius: 4px;
     }
 
@@ -52,160 +42,146 @@
     }
   </style>
 </head>
-<body class="min-h-screen text-slate-100 flex flex-col items-center overflow-x-hidden selection:bg-blue-500 selection:text-white pb-24">
+<body class="text-slate-100 overflow-x-hidden selection:bg-blue-500 selection:text-white">
 
-  <!-- Fixed background to prevent scroll/zoom glitches on mobile -->
-  <img src="https://raw.githubusercontent.com/tecnotradepty/recip/4113575ff07ef9a5b896b4e3f2a45ca98a0f5934/IMG_20260918_180227.jpg" class="fixed-bg" alt="Fondo texturizado">
+  <!-- 1. Fondo estricto con div (Evita zoom y redimensionamiento en scroll móvil) -->
+  <div 
+    class="fixed inset-0 w-full h-full -z-10 bg-cover bg-center bg-no-repeat" 
+    style="background-image: url('https://raw.githubusercontent.com/tecnotradepty/recip/4113575ff07ef9a5b896b4e3f2a45ca98a0f5934/IMG_20260918_180227.jpg');">
+  </div>
 
-  <main class="w-full flex flex-col items-center justify-start px-4">
+  <!-- 2. Contenedor principal con pt-48/pt-[28vh] para respetar el logo superior del fondo -->
+  <main class="relative min-h-screen pt-[25vh] sm:pt-56 pb-32 flex flex-col items-center w-full">
 
-    <!-- 1. Retro TV Downloader Area -->
-    <div class="relative w-[95vw] max-w-[750px] mt-[4vh] sm:mt-[6vh] drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] flex-shrink-0 mx-auto">
+    <!-- 3. Contenedor del Monitor -->
+    <div class="relative w-[95vw] max-w-[650px] drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] flex-shrink-0 mx-auto">
       
-      <!-- SCREEN UI (Z-0): Modern Glassmorphism UI nested inside the monitor -->
+      <!-- INTERFAZ INTERNA (Z-0) -->
       <div 
-        class="absolute z-0 bg-slate-900/90 backdrop-blur-md hide-scrollbar overflow-y-auto border border-slate-700/50"
-        style="top: 9%; bottom: 22%; left: 6%; right: 6%; padding: 4% 6%; border-radius: 12px 12px 4px 4px; box-shadow: inset 0 0 40px rgba(0,0,0,0.9);"
+        class="absolute z-0 bg-slate-900/95 backdrop-blur-md hide-scrollbar overflow-y-auto flex flex-col items-center pt-[5%] pb-[2%]"
+        style="top: 9%; bottom: 22%; left: 6%; right: 6%; border-radius: 12px 12px 4px 4px; box-shadow: inset 0 0 50px rgba(0,0,0,0.95);"
       >
-        <div class="w-full min-h-full flex flex-col items-center justify-start">
+        <div class="w-full flex flex-col items-center">
           
-          <!-- Modern Header -->
-          <div class="flex items-center gap-3 mb-4 w-full justify-center">
+          <!-- Encabezado Compacto -->
+          <div class="flex items-center gap-2 mb-3 mt-2">
             <img 
               src="https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg" 
               alt="TecnoTrade Logo" 
-              class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+              class="w-8 h-8 rounded-full border border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
             >
-            <div class="text-left">
-              <h1 class="text-[clamp(14px,3.5vw,24px)] font-black tracking-tight text-white leading-tight drop-shadow-md">
+            <div class="text-left leading-tight">
+              <h1 class="text-[clamp(14px,3vw,18px)] font-black tracking-tight text-white drop-shadow-md">
                 TecnoTrade
               </h1>
-              <p class="text-[clamp(10px,2vw,13px)] text-blue-400 font-bold uppercase tracking-wider">
+              <p class="text-[9px] text-blue-400 font-bold uppercase tracking-wider">
                 TikTok Downloader
               </p>
             </div>
           </div>
 
-          <!-- Input Form -->
-          <form id="downloadForm" class="flex flex-col gap-3 w-full mb-2 flex-shrink-0">
+          <!-- Formulario al 85% de ancho para no tocar los bordes -->
+          <form id="downloadForm" class="flex flex-col gap-2.5 w-[85%] mx-auto mb-2 flex-shrink-0">
             <input 
               type="url" 
               id="urlInput"
               required
-              placeholder="Pega el enlace de TikTok aquí..." 
-              class="w-full bg-slate-800/80 border border-slate-600 rounded-lg px-3 py-2.5 sm:py-3 text-[clamp(12px,2.5vw,15px)] text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 shadow-inner transition-all"
+              placeholder="Pega el enlace aquí..." 
+              class="w-full bg-slate-800/80 border border-slate-600 rounded-lg px-3 py-2 text-[clamp(11px,2vw,13px)] text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-inner"
             >
             <button 
               type="submit" 
               id="fetchBtn"
-              class="w-full py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-[clamp(12px,2.5vw,15px)] shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+              class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-[clamp(11px,2vw,13px)] shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
             >
               <span id="btnText">Buscar Video</span>
-              <svg id="spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <svg id="spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </button>
           </form>
 
-          <!-- Status Message -->
-          <div id="statusMessage" class="hidden w-full my-2 text-center text-[clamp(11px,2.5vw,13px)] font-medium text-rose-300 bg-rose-900/40 py-2 rounded-md border border-rose-800/50 backdrop-blur-sm"></div>
+          <!-- Mensaje de Estado -->
+          <div id="statusMessage" class="hidden w-[85%] mx-auto my-2 text-center text-xs font-medium text-rose-300 bg-rose-900/40 py-1.5 rounded border border-rose-800/50"></div>
 
-          <!-- Result Area -->
-          <div id="resultArea" class="hidden flex-col gap-3 w-full pb-2 mt-2">
+          <!-- Área de Resultados (85% width) -->
+          <div id="resultArea" class="hidden flex-col gap-2 w-[85%] mx-auto pb-4 mt-1">
             
-            <!-- Video Info Card -->
-            <div class="flex items-center gap-3 bg-slate-800/60 p-2.5 rounded-lg border border-slate-600/50 backdrop-blur-sm">
-              <img id="thumbPreview" src="" class="w-14 h-20 sm:w-16 sm:h-24 object-cover rounded shadow-md bg-black flex-shrink-0" alt="Thumb">
+            <div class="flex items-center gap-3 bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+              <img id="thumbPreview" src="" class="w-12 h-16 object-cover rounded bg-black flex-shrink-0 shadow" alt="Thumb">
               <div class="overflow-hidden flex-1">
-                <h3 id="vidAuthor" class="text-[clamp(12px,2.5vw,14px)] font-bold text-white truncate drop-shadow-sm"></h3>
-                <p id="vidTitle" class="text-[clamp(10px,2vw,12px)] text-slate-300 line-clamp-2 leading-snug mt-1"></p>
+                <h3 id="vidAuthor" class="text-xs font-bold text-white truncate"></h3>
+                <p id="vidTitle" class="text-[10px] text-slate-300 line-clamp-2 leading-snug mt-0.5"></p>
               </div>
             </div>
 
-            <!-- Download Action Buttons -->
-            <div class="flex flex-col gap-2">
-              <button id="dlHdBtn" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-[clamp(11px,2.5vw,14px)] font-bold rounded-lg shadow-md flex justify-center items-center active:scale-[0.98] transition-transform">
-                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <div class="flex flex-col gap-1.5">
+              <button class="w-full py-1.5 bg-blue-600 text-white text-xs font-bold rounded shadow-md flex justify-center items-center active:scale-[0.98]">
                 Descargar MP4 (HD)
               </button>
-              
-              <div class="flex gap-2">
-                <button id="dlSdBtn" class="flex-1 py-2 bg-slate-700/80 hover:bg-slate-600 text-slate-100 text-[clamp(10px,2vw,12px)] font-semibold rounded-lg active:scale-[0.98] transition-transform border border-slate-500/50 backdrop-blur-sm">
-                  MP4 Normal
-                </button>
-                <button id="dlAudioBtn" class="flex-1 py-2 bg-slate-800/80 hover:bg-slate-700 text-rose-300 text-[clamp(10px,2vw,12px)] font-semibold rounded-lg active:scale-[0.98] transition-transform border border-rose-900/50 backdrop-blur-sm">
-                  Solo Audio
-                </button>
+              <div class="flex gap-1.5">
+                <button class="flex-1 py-1.5 bg-slate-700 text-slate-100 text-[10px] font-semibold rounded active:scale-[0.98]">MP4 Normal</button>
+                <button class="flex-1 py-1.5 bg-slate-800 text-rose-300 text-[10px] font-semibold rounded border border-rose-900/50 active:scale-[0.98]">Audio MP3</button>
               </div>
-            </div>
-
-            <div id="dlProgress" class="hidden mt-1 text-center text-[clamp(10px,2vw,12px)] text-blue-300 animate-pulse font-medium">
-              Descargando archivo...
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- TV FRAME (Z-10): The transparent monitor PNG over the UI -->
-      <!-- pointer-events-none ensures you can click the input and buttons beneath the transparent parts -->
+      <!-- MARCO DEL MONITOR (Z-10) pointer-events-none -->
       <img 
         src="https://raw.githubusercontent.com/tecnotradepty/recip/7c8784559e3b3327432879bf85805695af998a3c/1789773956128.png" 
-        class="relative z-10 w-full h-auto pointer-events-none drop-shadow-2xl"
-        alt="Monitor CRT Frame"
+        class="relative z-10 w-full h-auto pointer-events-none drop-shadow-2xl block"
+        alt="Monitor CRT"
       >
     </div>
 
-    <!-- 2. Collage Elements Area (Below TV) -->
-      <div class="relative w-[80vw] max-w-[280px] -rotate-3 hover:rotate-0 transition-transform duration-300 drop-shadow-2xl">
-        <!-- Physical masking tape -->
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-6 masking-tape rotate-2 z-10"></div>
-        
-        <div class="bg-white p-2 pb-8 rounded-sm shadow-xl">
-          <img 
-            src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174601_Instagram.jpg" 
-            class="w-full h-auto border border-slate-200"
-            alt="Reparaciones Flyer"
-          >
-        </div>
+    <!-- 4. Collage Inferior -->
+    
+    <!-- Flyer de Reparaciones -->
+    <div class="relative w-[80vw] max-w-[280px] -rotate-3 hover:rotate-0 transition-transform duration-300 drop-shadow-2xl mt-4 sm:-mt-8 z-20">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 masking-tape rotate-2 z-30"></div>
+      <div class="bg-white p-2 pb-8 rounded-sm shadow-xl">
+        <img 
+          src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174601_Instagram.jpg" 
+          class="w-full h-auto border border-slate-200"
+          alt="Reparaciones Flyer"
+        >
+      </div>
+    </div>
+
+    <!-- Captura de Instagram con Post-it -->
+    <a 
+      href="https://www.instagram.com/tecnotradepty/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      class="relative w-[75vw] max-w-[260px] rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300 group block drop-shadow-2xl mt-16 sm:mt-12 z-30"
+    >
+      <!-- Post-it Note Amarilla -->
+      <div class="absolute -top-12 -right-2 sm:-right-8 bg-yellow-300 px-4 py-3 shadow-[0_5px_15px_rgba(0,0,0,0.4)] rotate-6 z-40 group-hover:rotate-3 transition-transform border border-yellow-400 w-48 pointer-events-none">
+        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 masking-tape -rotate-3"></div>
+        <p class="font-caveat text-[18px] text-black leading-tight text-center">
+          Pica para seguirnos, asi apoyas el emprendimiento local
+        </p>
       </div>
 
-      <!-- Item B: Instagram Support (Link) -->
-      <a 
-        href="https://www.instagram.com/tecnotradepty/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        class="relative w-[75vw] max-w-[260px] rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300 group block drop-shadow-2xl mt-12 md:mt-0"
-      >
-        <!-- Handwritten Sticky Note -->
-        <div class="absolute -top-10 -right-4 sm:-right-8 bg-yellow-300 px-4 py-3 shadow-[0_5px_15px_rgba(0,0,0,0.4)] rotate-6 z-30 pointer-events-none group-hover:rotate-3 transition-transform border border-yellow-400 w-48">
-          <!-- Tape on the note -->
-          <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 masking-tape -rotate-3"></div>
-          <p class="font-caveat text-[20px] text-black leading-tight text-center">
-            Pica para seguirnos, asi apoyas el emprendimiento local
-          </p>
-        </div>
+      <div class="absolute -top-3 left-8 w-16 h-6 masking-tape -rotate-6 z-30"></div>
 
-        <!-- Physical masking tape for the photo -->
-        <div class="absolute -top-3 left-6 w-16 h-6 masking-tape -rotate-6 z-10"></div>
-
-        <div class="bg-white p-2 pb-10 rounded-sm shadow-xl">
-          <img 
-            src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174740_Instagram.jpg" 
-            class="w-full h-auto border border-slate-200 object-cover"
-            alt="Siguenos en Instagram"
-          >
-        </div>
-      </a>
-
-    </div>
+      <div class="bg-white p-2 pb-10 rounded-sm shadow-xl">
+        <img 
+          src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174740_Instagram.jpg" 
+          class="w-full h-auto border border-slate-200 object-cover"
+          alt="Siguenos en Instagram"
+        >
+      </div>
+    </a>
 
   </main>
 
   <script>
     const downloadForm = document.getElementById('downloadForm');
-    const urlInput = document.getElementById('urlInput');
     const fetchBtn = document.getElementById('fetchBtn');
     const btnText = document.getElementById('btnText');
     const spinner = document.getElementById('spinner');
@@ -216,29 +192,14 @@
     const thumbPreview = document.getElementById('thumbPreview');
     const vidAuthor = document.getElementById('vidAuthor');
     const vidTitle = document.getElementById('vidTitle');
-    
-    const dlHdBtn = document.getElementById('dlHdBtn');
-    const dlSdBtn = document.getElementById('dlSdBtn');
-    const dlAudioBtn = document.getElementById('dlAudioBtn');
-    const dlProgress = document.getElementById('dlProgress');
-
-    let currentData = null;
-
-    function showStatus(msg) {
-      statusMessage.textContent = msg;
-      statusMessage.classList.remove('hidden');
-      resultArea.classList.add('hidden');
-    }
-
-    function hideStatus() {
-      statusMessage.classList.add('hidden');
-    }
 
     function setLoading(isLoading) {
       if (isLoading) {
         fetchBtn.disabled = true;
         btnText.textContent = "Buscando...";
         spinner.classList.remove('hidden');
+        statusMessage.classList.add('hidden');
+        resultArea.classList.add('hidden');
       } else {
         fetchBtn.disabled = false;
         btnText.textContent = "Buscar Video";
@@ -246,98 +207,23 @@
       }
     }
 
-    downloadForm.addEventListener('submit', async (e) => {
+    downloadForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const url = urlInput.value.trim();
-      if (!url) return;
-
-      if (!url.includes('tiktok.com')) {
-        showStatus('Por favor, ingresa un enlace válido de TikTok.');
-        return;
-      }
-
-      hideStatus();
       setLoading(true);
 
-      try {
-        // Fetch via TikWM API (Fast, supports hd=1)
-        const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}&hd=1`);
-        if (!res.ok) throw new Error('Error de red. Intenta nuevamente.');
+      // Simulación de carga y resultado (Falso/Mock como se solicitó)
+      setTimeout(() => {
+        setLoading(false);
         
-        const json = await res.json();
-        
-        if (json.code !== 0 || !json.data) {
-          throw new Error(json.msg || 'El video es privado o el enlace no es válido.');
-        }
-
-        currentData = json.data;
-        
-        // Populate Mini UI inside the CRT
-        thumbPreview.src = currentData.cover || currentData.origin_cover || 'https://placehold.co/100x150/1e293b/ffffff?text=Video';
-        vidAuthor.textContent = currentData.author?.nickname || '@usuario';
-        vidTitle.textContent = currentData.title || 'Video sin descripción';
+        // Datos mockeados de demostración
+        thumbPreview.src = 'https://placehold.co/120x160/1e293b/3b82f6?text=TikTok+Video';
+        vidAuthor.textContent = '@usuario_random';
+        vidTitle.textContent = 'Este es un video simulado para comprobar la interfaz de descarga sin marca de agua.';
         
         resultArea.classList.remove('hidden');
-
-      } catch (err) {
-        showStatus(err.message || 'Error al obtener los datos del video.');
-      } finally {
-        setLoading(false);
-      }
-    });
-
-    async function triggerDownload(url, filename) {
-      if (!url) return;
-      dlProgress.classList.remove('hidden');
-      
-      try {
-        // Attempt native fetch to create a Blob (bypasses direct window opening if CORS allows)
-        const res = await fetch(url);
-        const blob = await res.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
         
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(blobUrl);
-      } catch (e) {
-        // Fallback: Anchor redirect for strict CORS sources
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } finally {
-        setTimeout(() => dlProgress.classList.add('hidden'), 2000);
-      }
-    }
-
-    dlHdBtn.addEventListener('click', () => {
-      if (!currentData) return;
-      const url = currentData.hdplay || currentData.play;
-      const id = currentData.id || 'tt_video';
-      triggerDownload(url, `TecnoTrade_${id}_HD.mp4`);
+      }, 1500); // 1.5 segundos de simulación
     });
-
-    dlSdBtn.addEventListener('click', () => {
-      if (!currentData) return;
-      const url = currentData.play;
-      const id = currentData.id || 'tt_video';
-      triggerDownload(url, `TecnoTrade_${id}_SD.mp4`);
-    });
-
-    dlAudioBtn.addEventListener('click', () => {
-      if (!currentData) return;
-      const url = currentData.music || currentData.music_info?.play;
-      const id = currentData.id || 'tt_audio';
-      triggerDownload(url, `TecnoTrade_${id}_Audio.mp3`);
-    });
-
   </script>
 </body>
 </html>
