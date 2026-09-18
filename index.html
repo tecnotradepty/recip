@@ -8,12 +8,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      /* Fallback color */
       background-color: #0a1128; 
     }
     
@@ -31,15 +30,15 @@
       object-fit: cover;
     }
 
-    /* Hide scrollbar for the tiny TV screen */
+    /* Hide scrollbar for the UI screen */
     .hide-scrollbar::-webkit-scrollbar {
       width: 4px;
     }
     .hide-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.2);
+      background: rgba(0,0,0,0.1);
     }
     .hide-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.15);
       border-radius: 4px;
     }
 
@@ -53,7 +52,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen text-slate-100 flex flex-col items-center overflow-x-hidden selection:bg-blue-500 selection:text-white pb-20">
+<body class="min-h-screen text-slate-100 flex flex-col items-center overflow-x-hidden selection:bg-blue-500 selection:text-white pb-24">
 
   <!-- Fixed background to prevent scroll/zoom glitches on mobile -->
   <img src="https://raw.githubusercontent.com/tecnotradepty/recip/4113575ff07ef9a5b896b4e3f2a45ca98a0f5934/IMG_20260918_180227.jpg" class="fixed-bg" alt="Fondo texturizado">
@@ -61,82 +60,87 @@
   <main class="w-full flex flex-col items-center justify-start px-4">
 
     <!-- 1. Retro TV Downloader Area -->
-    <div class="relative w-[95vw] max-w-[600px] mt-[4vh] sm:mt-[8vh] drop-shadow-2xl flex-shrink-0">
+    <div class="relative w-[95vw] max-w-[750px] mt-[4vh] sm:mt-[6vh] drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] flex-shrink-0 mx-auto">
       
-      <!-- SCREEN UI (Z-0): The actual active screen UI containing the app -->
-      <!-- Coords mapped precisely based on your instructions -->
+      <!-- SCREEN UI (Z-0): Modern Glassmorphism UI nested inside the monitor -->
       <div 
-        class="absolute z-0 bg-[#0f172a] hide-scrollbar overflow-y-auto"
-        style="top: 28%; bottom: 18%; left: 8%; right: 26%; padding: 3% 5%; border-radius: 12% / 10%; box-shadow: inset 0 0 20px rgba(0,0,0,0.9);"
+        class="absolute z-0 bg-slate-900/90 backdrop-blur-md hide-scrollbar overflow-y-auto border border-slate-700/50"
+        style="top: 9%; bottom: 22%; left: 6%; right: 6%; padding: 4% 6%; border-radius: 12px 12px 4px 4px; box-shadow: inset 0 0 40px rgba(0,0,0,0.9);"
       >
-        <div class="w-full h-full flex flex-col items-center justify-start pt-1">
+        <div class="w-full min-h-full flex flex-col items-center justify-start">
           
-          <!-- TecnoTrade Logo -->
-          <img 
-            src="https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg" 
-            alt="TecnoTrade Logo" 
-            class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)] mb-2"
-          >
-
-          <div class="text-center mb-3">
-            <h1 class="text-[clamp(11px,3.5vw,18px)] font-black tracking-tight text-white leading-tight">
-              Descargas TikTok
-            </h1>
-            <p class="text-[clamp(9px,2vw,11px)] text-blue-400 mt-0.5 leading-tight font-semibold">Sin marca de agua</p>
+          <!-- Modern Header -->
+          <div class="flex items-center gap-3 mb-4 w-full justify-center">
+            <img 
+              src="https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg" 
+              alt="TecnoTrade Logo" 
+              class="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+            >
+            <div class="text-left">
+              <h1 class="text-[clamp(14px,3.5vw,24px)] font-black tracking-tight text-white leading-tight drop-shadow-md">
+                TecnoTrade
+              </h1>
+              <p class="text-[clamp(10px,2vw,13px)] text-blue-400 font-bold uppercase tracking-wider">
+                TikTok Downloader
+              </p>
+            </div>
           </div>
 
           <!-- Input Form -->
-          <form id="downloadForm" class="flex flex-col gap-2 w-full mb-2 flex-shrink-0">
+          <form id="downloadForm" class="flex flex-col gap-3 w-full mb-2 flex-shrink-0">
             <input 
               type="url" 
               id="urlInput"
               required
-              placeholder="Pega el enlace aquí..." 
-              class="w-full bg-slate-900 border border-slate-700 rounded-md px-2 py-2 text-[clamp(10px,2.5vw,13px)] text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 shadow-inner"
+              placeholder="Pega el enlace de TikTok aquí..." 
+              class="w-full bg-slate-800/80 border border-slate-600 rounded-lg px-3 py-2.5 sm:py-3 text-[clamp(12px,2.5vw,15px)] text-white placeholder-slate-400 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 shadow-inner transition-all"
             >
             <button 
               type="submit" 
               id="fetchBtn"
-              class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-md text-[clamp(10px,2.5vw,13px)] shadow-md flex items-center justify-center gap-2 transition-colors"
+              class="w-full py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-[clamp(12px,2.5vw,15px)] shadow-[0_0_15px_rgba(37,99,235,0.4)] hover:shadow-[0_0_20px_rgba(37,99,235,0.6)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
             >
               <span id="btnText">Buscar Video</span>
-              <svg id="spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <svg id="spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </button>
           </form>
 
-          <div id="statusMessage" class="hidden w-full my-2 text-center text-[clamp(9px,2vw,11px)] font-medium text-rose-400"></div>
+          <!-- Status Message -->
+          <div id="statusMessage" class="hidden w-full my-2 text-center text-[clamp(11px,2.5vw,13px)] font-medium text-rose-300 bg-rose-900/40 py-2 rounded-md border border-rose-800/50 backdrop-blur-sm"></div>
 
           <!-- Result Area -->
-          <div id="resultArea" class="hidden flex-col gap-2 w-full pb-4">
+          <div id="resultArea" class="hidden flex-col gap-3 w-full pb-2 mt-2">
             
-            <div class="flex items-center gap-2 bg-slate-800 p-2 rounded border border-slate-700">
-              <img id="thumbPreview" src="" class="w-12 h-16 sm:w-16 sm:h-20 object-cover rounded shadow bg-black flex-shrink-0" alt="Thumb">
+            <!-- Video Info Card -->
+            <div class="flex items-center gap-3 bg-slate-800/60 p-2.5 rounded-lg border border-slate-600/50 backdrop-blur-sm">
+              <img id="thumbPreview" src="" class="w-14 h-20 sm:w-16 sm:h-24 object-cover rounded shadow-md bg-black flex-shrink-0" alt="Thumb">
               <div class="overflow-hidden flex-1">
-                <h3 id="vidAuthor" class="text-[clamp(10px,2.5vw,12px)] font-bold text-white truncate"></h3>
-                <p id="vidTitle" class="text-[clamp(9px,2vw,10px)] text-slate-300 line-clamp-2 leading-tight mt-1"></p>
+                <h3 id="vidAuthor" class="text-[clamp(12px,2.5vw,14px)] font-bold text-white truncate drop-shadow-sm"></h3>
+                <p id="vidTitle" class="text-[clamp(10px,2vw,12px)] text-slate-300 line-clamp-2 leading-snug mt-1"></p>
               </div>
             </div>
 
             <!-- Download Action Buttons -->
-            <div class="flex flex-col gap-1.5 mt-1">
-              <button id="dlHdBtn" class="w-full py-2 px-2 bg-blue-600 hover:bg-blue-500 text-white text-[clamp(10px,2vw,12px)] font-bold rounded shadow-md flex justify-center items-center active:scale-95 transition-transform">
+            <div class="flex flex-col gap-2">
+              <button id="dlHdBtn" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-[clamp(11px,2.5vw,14px)] font-bold rounded-lg shadow-md flex justify-center items-center active:scale-[0.98] transition-transform">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 Descargar MP4 (HD)
               </button>
               
-              <div class="flex gap-1.5">
-                <button id="dlSdBtn" class="flex-1 py-1.5 px-1 bg-slate-700 text-slate-200 text-[clamp(9px,2vw,11px)] font-semibold rounded active:scale-95 transition-transform border border-slate-600">
+              <div class="flex gap-2">
+                <button id="dlSdBtn" class="flex-1 py-2 bg-slate-700/80 hover:bg-slate-600 text-slate-100 text-[clamp(10px,2vw,12px)] font-semibold rounded-lg active:scale-[0.98] transition-transform border border-slate-500/50 backdrop-blur-sm">
                   MP4 Normal
                 </button>
-                <button id="dlAudioBtn" class="flex-1 py-1.5 px-1 bg-slate-800 text-rose-400 text-[clamp(9px,2vw,11px)] font-semibold rounded active:scale-95 transition-transform border border-rose-900">
+                <button id="dlAudioBtn" class="flex-1 py-2 bg-slate-800/80 hover:bg-slate-700 text-rose-300 text-[clamp(10px,2vw,12px)] font-semibold rounded-lg active:scale-[0.98] transition-transform border border-rose-900/50 backdrop-blur-sm">
                   Solo Audio
                 </button>
               </div>
             </div>
 
-            <div id="dlProgress" class="hidden mt-2 text-center text-[clamp(9px,2vw,10px)] text-blue-300 animate-pulse font-medium">
+            <div id="dlProgress" class="hidden mt-1 text-center text-[clamp(10px,2vw,12px)] text-blue-300 animate-pulse font-medium">
               Descargando archivo...
             </div>
           </div>
@@ -144,19 +148,17 @@
         </div>
       </div>
 
-      <!-- TV FRAME (Z-10): The transparent TV PNG over the UI -->
+      <!-- TV FRAME (Z-10): The transparent monitor PNG over the UI -->
+      <!-- pointer-events-none ensures you can click the input and buttons beneath the transparent parts -->
       <img 
-        src="https://raw.githubusercontent.com/tecnotradepty/recip/e738b8d9865e09adbff912f047ec991977522041/1789772902129.png" 
+        src="https://raw.githubusercontent.com/tecnotradepty/recip/7c8784559e3b3327432879bf85805695af998a3c/1789773956128.png" 
         class="relative z-10 w-full h-auto pointer-events-none drop-shadow-2xl"
-        alt="Retro TV Frame"
+        alt="Monitor CRT Frame"
       >
     </div>
 
     <!-- 2. Collage Elements Area (Below TV) -->
-    <div class="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center gap-16 md:gap-8 mt-10 sm:mt-16 z-20">
-      
-      <!-- Item A: Promotional Flyer -->
-      <div class="relative w-[80vw] max-w-[300px] -rotate-3 hover:rotate-0 transition-transform duration-300 drop-shadow-2xl">
+      <div class="relative w-[80vw] max-w-[280px] -rotate-3 hover:rotate-0 transition-transform duration-300 drop-shadow-2xl">
         <!-- Physical masking tape -->
         <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-6 masking-tape rotate-2 z-10"></div>
         
@@ -174,13 +176,13 @@
         href="https://www.instagram.com/tecnotradepty/" 
         target="_blank" 
         rel="noopener noreferrer"
-        class="relative w-[75vw] max-w-[280px] rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300 group block drop-shadow-2xl mt-12 md:mt-0"
+        class="relative w-[75vw] max-w-[260px] rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300 group block drop-shadow-2xl mt-12 md:mt-0"
       >
         <!-- Handwritten Sticky Note -->
         <div class="absolute -top-10 -right-4 sm:-right-8 bg-yellow-300 px-4 py-3 shadow-[0_5px_15px_rgba(0,0,0,0.4)] rotate-6 z-30 pointer-events-none group-hover:rotate-3 transition-transform border border-yellow-400 w-48">
           <!-- Tape on the note -->
           <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 masking-tape -rotate-3"></div>
-          <p class="font-caveat text-[22px] text-black leading-tight text-center">
+          <p class="font-caveat text-[20px] text-black leading-tight text-center">
             Pica para seguirnos, asi apoyas el emprendimiento local
           </p>
         </div>
@@ -270,7 +272,7 @@
 
         currentData = json.data;
         
-        // Populate Mini UI inside the TV
+        // Populate Mini UI inside the CRT
         thumbPreview.src = currentData.cover || currentData.origin_cover || 'https://placehold.co/100x150/1e293b/ffffff?text=Video';
         vidAuthor.textContent = currentData.author?.nickname || '@usuario';
         vidTitle.textContent = currentData.title || 'Video sin descripción';
