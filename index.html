@@ -1,229 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TecnoTrade Downloader - Digital Collage</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0a1128; 
-    }
-    
-    .font-caveat {
-      font-family: 'Caveat', cursive;
-    }
-
-    /* Hide scrollbar for the UI screen */
-    .hide-scrollbar::-webkit-scrollbar {
-      width: 4px;
-    }
-    .hide-scrollbar::-webkit-scrollbar-track {
-      background: rgba(0,0,0,0.1);
-    }
-    .hide-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(59, 130, 246, 0.4);
-      border-radius: 4px;
-    }
-
-    /* Tape effect for photos */
-    .masking-tape {
-      background-color: rgba(255, 255, 255, 0.45);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TecnoTrade Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Kalam:wght@400;700&display=swap');
+        body, html { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .bg-fixed-texture {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10;
+            background-image: url('https://raw.githubusercontent.com/tecnotradepty/recip/4113575ff07ef9a5b896b4e3f2a45ca98a0f5934/IMG_20260918_180227.jpg');
+            background-size: cover; background-position: center;
+        }
+        .polaroid { background: white; padding: 8px 8px 24px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: rotate(-3deg); }
+        .tape { position: absolute; width: 80px; height: 25px; background: rgba(255,255,255,0.4); box-shadow: 0 1px 3px rgba(0,0,0,0.2); backdrop-filter: blur(2px); transform: rotate(-2deg); top: -10px; left: 50%; margin-left: -40px; z-index: 10; }
+        .post-it { background: #ffd52c; padding: 15px; font-family: 'Kalam', cursive; font-size: 1.1rem; color: #111; box-shadow: 2px 4px 10px rgba(0,0,0,0.4); transform: rotate(5deg); }
+    </style>
 </head>
-<body class="text-slate-100 overflow-x-hidden selection:bg-blue-500 selection:text-white">
+<body class="antialiased">
+    <div class="bg-fixed-texture"></div>
+    <div class="pt-[25vh] pb-20 px-4 max-w-lg mx-auto flex flex-col items-center relative">
+        
+        <!-- CRT Monitor & UI -->
+        <div class="relative w-full max-w-[400px] mb-12">
+            <!-- UI Container (Under Monitor) -->
+            <div class="absolute inset-0 z-0" style="top: 9%; bottom: 22%; left: 6%; right: 6%;">
+                <div class="w-full h-full bg-slate-900/95 backdrop-blur-md rounded-2xl border border-slate-700 p-[8%] flex flex-col overflow-y-auto overflow-x-hidden" style="scrollbar-width: none;">
+                    
+                    <!-- Header -->
+                    <div class="flex items-center justify-center gap-2 mb-4">
+                        <img src="https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg" class="w-8 h-8 rounded-lg shadow-[0_0_10px_rgba(37,99,235,0.8)] border border-blue-500" alt="Logo">
+                        <div class="text-center">
+                            <h1 class="text-white font-bold text-base leading-tight">TecnoTrade</h1>
+                            <p class="text-blue-400 text-[10px] font-bold tracking-widest uppercase">Downloader</p>
+                        </div>
+                    </div>
 
-  <!-- 1. Fondo estricto con div (Evita zoom y redimensionamiento en scroll móvil) -->
-  <div 
-    class="fixed inset-0 w-full h-full -z-10 bg-cover bg-center bg-no-repeat" 
-    style="background-image: url('https://raw.githubusercontent.com/tecnotradepty/recip/4113575ff07ef9a5b896b4e3f2a45ca98a0f5934/IMG_20260918_180227.jpg');">
-  </div>
+                    <!-- Platform Selector -->
+                    <div class="w-[85%] mx-auto flex gap-1 mb-3 bg-slate-800 p-1 rounded-lg border border-slate-700">
+                        <button id="btn-tiktok" class="flex-1 py-1 text-[11px] font-bold rounded-md bg-blue-600 text-white shadow-sm transition-all" onclick="setPlatform('tiktok')">TikTok</button>
+                        <button id="btn-pinterest" class="flex-1 py-1 text-[11px] font-bold rounded-md bg-transparent text-slate-400 hover:text-white transition-all" onclick="setPlatform('pinterest')">Pinterest</button>
+                    </div>
 
-  <!-- 2. Contenedor principal con pt-48/pt-[28vh] para respetar el logo superior del fondo -->
-  <main class="relative min-h-screen pt-[25vh] sm:pt-56 pb-32 flex flex-col items-center w-full">
+                    <!-- Search Form -->
+                    <form id="downloadForm" class="w-[85%] mx-auto flex flex-col gap-2">
+                        <input type="url" id="urlInput" placeholder="Pega enlace de TikTok..." required class="w-full bg-slate-800/80 border border-slate-600 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                        <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-lg text-xs shadow-[0_0_15px_rgba(37,99,235,0.4)] transition-all flex justify-center items-center gap-2">
+                            <span>Buscar Video</span>
+                        </button>
+                    </form>
+                    
+                    <!-- Result Area -->
+                    <div id="result" class="w-[85%] mx-auto mt-4 hidden flex-col gap-2">
+                        <div class="w-full aspect-[9/16] bg-black rounded-lg overflow-hidden relative">
+                            <img id="thumb" src="" class="w-full h-full object-cover opacity-50">
+                        </div>
+                        <button class="w-full bg-emerald-600 hover:bg-emerald-500 transition-all text-white font-bold py-2 rounded-lg text-[11px] shadow-[0_0_10px_rgba(5,150,105,0.4)]">Descargar Archivo</button>
+                    </div>
 
-    <!-- 3. Contenedor del Monitor -->
-    <div class="relative w-[95vw] max-w-[650px] drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] flex-shrink-0 mx-auto">
-      
-      <!-- INTERFAZ INTERNA (Z-0) -->
-      <div 
-        class="absolute z-0 bg-slate-900/95 backdrop-blur-md hide-scrollbar overflow-y-auto flex flex-col items-center pt-[5%] pb-[2%]"
-        style="top: 9%; bottom: 22%; left: 6%; right: 6%; border-radius: 12px 12px 4px 4px; box-shadow: inset 0 0 50px rgba(0,0,0,0.95);"
-      >
-        <div class="w-full flex flex-col items-center">
-          
-          <!-- Encabezado Compacto -->
-          <div class="flex items-center gap-2 mb-3 mt-2">
-            <img 
-              src="https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg" 
-              alt="TecnoTrade Logo" 
-              class="w-8 h-8 rounded-full border border-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
-            >
-            <div class="text-left leading-tight">
-              <h1 class="text-[clamp(14px,3vw,18px)] font-black tracking-tight text-white drop-shadow-md">
-                TecnoTrade
-              </h1>
-              <p class="text-[9px] text-blue-400 font-bold uppercase tracking-wider">
-                TikTok Downloader
-              </p>
-            </div>
-          </div>
-
-          <!-- Formulario al 85% de ancho para no tocar los bordes -->
-          <form id="downloadForm" class="flex flex-col gap-2.5 w-[85%] mx-auto mb-2 flex-shrink-0">
-            <input 
-              type="url" 
-              id="urlInput"
-              required
-              placeholder="Pega el enlace aquí..." 
-              class="w-full bg-slate-800/80 border border-slate-600 rounded-lg px-3 py-2 text-[clamp(11px,2vw,13px)] text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-inner"
-            >
-            <button 
-              type="submit" 
-              id="fetchBtn"
-              class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg text-[clamp(11px,2vw,13px)] shadow-[0_0_15px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
-            >
-              <span id="btnText">Buscar Video</span>
-              <svg id="spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            </button>
-          </form>
-
-          <!-- Mensaje de Estado -->
-          <div id="statusMessage" class="hidden w-[85%] mx-auto my-2 text-center text-xs font-medium text-rose-300 bg-rose-900/40 py-1.5 rounded border border-rose-800/50"></div>
-
-          <!-- Área de Resultados (85% width) -->
-          <div id="resultArea" class="hidden flex-col gap-2 w-[85%] mx-auto pb-4 mt-1">
-            
-            <div class="flex items-center gap-3 bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-              <img id="thumbPreview" src="" class="w-12 h-16 object-cover rounded bg-black flex-shrink-0 shadow" alt="Thumb">
-              <div class="overflow-hidden flex-1">
-                <h3 id="vidAuthor" class="text-xs font-bold text-white truncate"></h3>
-                <p id="vidTitle" class="text-[10px] text-slate-300 line-clamp-2 leading-snug mt-0.5"></p>
-              </div>
+                </div>
             </div>
 
-            <div class="flex flex-col gap-1.5">
-              <button class="w-full py-1.5 bg-blue-600 text-white text-xs font-bold rounded shadow-md flex justify-center items-center active:scale-[0.98]">
-                Descargar MP4 (HD)
-              </button>
-              <div class="flex gap-1.5">
-                <button class="flex-1 py-1.5 bg-slate-700 text-slate-100 text-[10px] font-semibold rounded active:scale-[0.98]">MP4 Normal</button>
-                <button class="flex-1 py-1.5 bg-slate-800 text-rose-300 text-[10px] font-semibold rounded border border-rose-900/50 active:scale-[0.98]">Audio MP3</button>
-              </div>
-            </div>
-          </div>
-
+            <!-- CRT Monitor Frame (Overlay) -->
+            <img src="https://raw.githubusercontent.com/tecnotradepty/recip/7c8784559e3b3327432879bf85805695af998a3c/1789773956128.png" class="w-full h-auto relative z-10 pointer-events-none drop-shadow-2xl" alt="Monitor Frame">
         </div>
-      </div>
 
-      <!-- MARCO DEL MONITOR (Z-10) pointer-events-none -->
-      <img 
-        src="https://raw.githubusercontent.com/tecnotradepty/recip/7c8784559e3b3327432879bf85805695af998a3c/1789773956128.png" 
-        class="relative z-10 w-full h-auto pointer-events-none drop-shadow-2xl block"
-        alt="Monitor CRT"
-      >
+        <!-- Collage Elements -->
+        <div class="relative w-full max-w-[320px] mx-auto mt-4">
+            <!-- Flyer Polaroid -->
+            <div class="polaroid relative z-10 w-[80%] -ml-4">
+                <div class="tape"></div>
+                <img src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174601_Instagram.jpg" class="w-full h-auto">
+            </div>
+            
+            <!-- IG Polaroid -->
+            <a href="https://www.instagram.com/tecnotradepty/" target="_blank" class="polaroid relative block z-20 w-[65%] ml-auto -mt-16 transform rotate-3 hover:scale-105 transition-transform">
+                <div class="tape" style="transform: rotate(3deg);"></div>
+                <img src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174740_Instagram.jpg" class="w-full h-auto">
+                <!-- Post it -->
+                <div class="post-it absolute -top-8 -right-8 w-32 text-center text-sm z-30">
+                    Pica para seguirnos, así apoyas el emprendimiento local
+                </div>
+            </a>
+        </div>
+
     </div>
 
-    <!-- 4. Collage Inferior -->
-    
-    <!-- Flyer de Reparaciones -->
-    <div class="relative w-[80vw] max-w-[280px] -rotate-3 hover:rotate-0 transition-transform duration-300 drop-shadow-2xl mt-4 sm:-mt-8 z-20">
-      <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 masking-tape rotate-2 z-30"></div>
-      <div class="bg-white p-2 pb-8 rounded-sm shadow-xl">
-        <img 
-          src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174601_Instagram.jpg" 
-          class="w-full h-auto border border-slate-200"
-          alt="Reparaciones Flyer"
-        >
-      </div>
-    </div>
+    <script>
+        let currentPlatform = 'tiktok';
+        const btnTiktok = document.getElementById('btn-tiktok');
+        const btnPinterest = document.getElementById('btn-pinterest');
+        const urlInput = document.getElementById('urlInput');
 
-    <!-- Captura de Instagram con Post-it -->
-    <a 
-      href="https://www.instagram.com/tecnotradepty/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      class="relative w-[75vw] max-w-[260px] rotate-2 hover:-rotate-1 hover:scale-105 transition-all duration-300 group block drop-shadow-2xl mt-16 sm:mt-12 z-30"
-    >
-      <!-- Post-it Note Amarilla -->
-      <div class="absolute -top-12 -right-2 sm:-right-8 bg-yellow-300 px-4 py-3 shadow-[0_5px_15px_rgba(0,0,0,0.4)] rotate-6 z-40 group-hover:rotate-3 transition-transform border border-yellow-400 w-48 pointer-events-none">
-        <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-4 masking-tape -rotate-3"></div>
-        <p class="font-caveat text-[18px] text-black leading-tight text-center">
-          Pica para seguirnos, asi apoyas el emprendimiento local
-        </p>
-      </div>
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            if (platform === 'tiktok') {
+                btnTiktok.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-blue-600 text-white shadow-sm transition-all';
+                btnPinterest.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-transparent text-slate-400 hover:text-white transition-all';
+                urlInput.placeholder = 'Pega enlace de TikTok...';
+            } else {
+                btnPinterest.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-red-600 text-white shadow-sm transition-all';
+                btnTiktok.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-transparent text-slate-400 hover:text-white transition-all';
+                urlInput.placeholder = 'Pega enlace de Pinterest...';
+            }
+        }
 
-      <div class="absolute -top-3 left-8 w-16 h-6 masking-tape -rotate-6 z-30"></div>
+        document.getElementById('downloadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const result = document.getElementById('result');
+            const thumb = document.getElementById('thumb');
+            
+            btn.innerHTML = '<span class="animate-spin text-lg">⚙</span> Procesando...';
+            btn.disabled = true;
+            result.classList.add('hidden');
 
-      <div class="bg-white p-2 pb-10 rounded-sm shadow-xl">
-        <img 
-          src="https://raw.githubusercontent.com/tecnotradepty/recip/c934c3a2ca9aa1c34dbb57a5722c4930b337be16/Screenshot_20260918_174740_Instagram.jpg" 
-          class="w-full h-auto border border-slate-200 object-cover"
-          alt="Siguenos en Instagram"
-        >
-      </div>
-    </a>
-
-  </main>
-
-  <script>
-    const downloadForm = document.getElementById('downloadForm');
-    const fetchBtn = document.getElementById('fetchBtn');
-    const btnText = document.getElementById('btnText');
-    const spinner = document.getElementById('spinner');
-    
-    const statusMessage = document.getElementById('statusMessage');
-    const resultArea = document.getElementById('resultArea');
-    
-    const thumbPreview = document.getElementById('thumbPreview');
-    const vidAuthor = document.getElementById('vidAuthor');
-    const vidTitle = document.getElementById('vidTitle');
-
-    function setLoading(isLoading) {
-      if (isLoading) {
-        fetchBtn.disabled = true;
-        btnText.textContent = "Buscando...";
-        spinner.classList.remove('hidden');
-        statusMessage.classList.add('hidden');
-        resultArea.classList.add('hidden');
-      } else {
-        fetchBtn.disabled = false;
-        btnText.textContent = "Buscar Video";
-        spinner.classList.add('hidden');
-      }
-    }
-
-    downloadForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      setLoading(true);
-
-      // Simulación de carga y resultado (Falso/Mock como se solicitó)
-      setTimeout(() => {
-        setLoading(false);
-        
-        // Datos mockeados de demostración
-        thumbPreview.src = 'https://placehold.co/120x160/1e293b/3b82f6?text=TikTok+Video';
-        vidAuthor.textContent = '@usuario_random';
-        vidTitle.textContent = 'Este es un video simulado para comprobar la interfaz de descarga sin marca de agua.';
-        
-        resultArea.classList.remove('hidden');
-        
-      }, 1500); // 1.5 segundos de simulación
-    });
-  </script>
+            setTimeout(() => {
+                btn.innerHTML = '<span>Buscar Archivo</span>';
+                btn.disabled = false;
+                thumb.src = 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg'; 
+                result.classList.remove('hidden');
+                result.classList.add('flex');
+            }, 1200);
+        });
+    </script>
 </body>
 </html>
