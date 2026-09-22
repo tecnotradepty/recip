@@ -130,20 +130,31 @@
                         thumb.src = data.data.cover;
                         downloadBtn.onclick = () => window.open(data.data.play, '_blank');
                     } else throw new Error("Error en API de TikTok");
-
-                } else if (currentPlatform === 'pinterest') {
+} else if (currentPlatform === 'pinterest') {
                     // Proxy CORS para extraer metadata de Pinterest
                     const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
                     const data = await res.json();
                     
-                    // Regex para localizar video y miniatura en el DOM de Pinterest
-                    const videoMatch = data.contents.match(/"contentUrl":"(https:\/\/[^"]+\.mp4)"/);
-                    const imgMatch = data.contents.match(/"thumbnailUrl":"(https:\/\/[^"]+\.jpg)"/);
+                    // Limpiar caracteres escapados de JSON (\/ a /)
+                    const cleanHtml = data.contents.replace(/\\\//g, '/');
+                    
+                    // Regex ampliado: Busca etiqueta og:video o cualquier enlace directo .mp4
+                    const videoMatch = cleanHtml.match(/<meta[^>]+property=["']og:video(:secure_url)?["'][^>]+content=["']([^"']+)["']/i) || 
+                                       cleanHtml.match(/(https:\/\/[^"'\s>]+\.mp4)/i);
+                                       
+                    // Regex ampliado: Busca etiqueta og:image para la miniatura
+                    const imgMatch = cleanHtml.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
                     
                     if (videoMatch) {
-                        thumb.src = imgMatch ? imgMatch[1] : 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg';
-                        downloadBtn.onclick = () => window.open(videoMatch[1], '_blank');
-                    } else throw new Error("Video de Pinterest no localizado");
+                        // videoMatch[2] captura el grupo de la URL del video si usa og:video, videoMatch[1] si usa el fallback directo
+                        const finalVideoUrl = videoMatch[2] || videoMatch[1];
+                        const finalImgUrl = imgMatch ? imgMatch[1] : 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg';
+                        
+                        thumb.src = finalImgUrl;
+                        downloadBtn.onclick = () => window.open(finalVideoUrl, '_blank');
+                    } else {
+                        throw new Error("Video de Pinterest no localizado o bloqueado por privacidad");
+                    }
                 }
                 
                 btn.innerHTML = '<span>Buscar Video</span>';
