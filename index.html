@@ -95,7 +95,7 @@
 
         function setPlatform(platform) {
             currentPlatform = platform;
-            urlInput.value = ''; // Limpia el input al cambiar de plataforma
+            urlInput.value = ''; // Limpia el input al cambiar
             if (platform === 'tiktok') {
                 btnTiktok.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-blue-600 text-white shadow-sm transition-all';
                 btnPinterest.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-transparent text-slate-400 hover:text-white transition-all';
@@ -118,11 +118,11 @@
             btn.innerHTML = '<span class="animate-spin text-lg">⚙</span> Procesando...';
             btn.disabled = true;
             result.classList.add('hidden');
-            downloadBtn.onclick = null; // Reset evento anterior
+            downloadBtn.onclick = null; 
 
             try {
                 if (currentPlatform === 'tiktok') {
-                    // API Pública TikWM
+                    // API Pública TikWM para TikTok
                     const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
                     const data = await res.json();
                     
@@ -130,30 +130,28 @@
                         thumb.src = data.data.cover;
                         downloadBtn.onclick = () => window.open(data.data.play, '_blank');
                     } else throw new Error("Error en API de TikTok");
-} else if (currentPlatform === 'pinterest') {
-                    // Proxy CORS para extraer metadata de Pinterest
-                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+
+                } else if (currentPlatform === 'pinterest') {
+                    // API Pública de Cobalt (Especializada en evadir bloqueos de Pinterest y otras redes)
+                    const res = await fetch("https://api.cobalt.tools/api/json", {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ url: url })
+                    });
+                    
+                    if (!res.ok) throw new Error("La API de descargas rechazó la conexión");
+                    
                     const data = await res.json();
                     
-                    // Limpiar caracteres escapados de JSON (\/ a /)
-                    const cleanHtml = data.contents.replace(/\\\//g, '/');
-                    
-                    // Regex ampliado: Busca etiqueta og:video o cualquier enlace directo .mp4
-                    const videoMatch = cleanHtml.match(/<meta[^>]+property=["']og:video(:secure_url)?["'][^>]+content=["']([^"']+)["']/i) || 
-                                       cleanHtml.match(/(https:\/\/[^"'\s>]+\.mp4)/i);
-                                       
-                    // Regex ampliado: Busca etiqueta og:image para la miniatura
-                    const imgMatch = cleanHtml.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i);
-                    
-                    if (videoMatch) {
-                        // videoMatch[2] captura el grupo de la URL del video si usa og:video, videoMatch[1] si usa el fallback directo
-                        const finalVideoUrl = videoMatch[2] || videoMatch[1];
-                        const finalImgUrl = imgMatch ? imgMatch[1] : 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg';
-                        
-                        thumb.src = finalImgUrl;
-                        downloadBtn.onclick = () => window.open(finalVideoUrl, '_blank');
+                    if (data.status === "redirect" || data.status === "stream" || data.url) {
+                        // Cobalt procesa el video. Ponemos tu logo de fallback para la miniatura.
+                        thumb.src = 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg';
+                        downloadBtn.onclick = () => window.open(data.url, '_blank');
                     } else {
-                        throw new Error("Video de Pinterest no localizado o bloqueado por privacidad");
+                        throw new Error("No se encontró video en este enlace de Pinterest");
                     }
                 }
                 
@@ -163,6 +161,7 @@
                 result.classList.add('flex');
 
             } catch (error) {
+                console.error("Detalle del fallo:", error);
                 alert("Error al extraer el video. Revisa el enlace o intenta de nuevo.");
                 btn.innerHTML = '<span>Buscar Video</span>';
                 btn.disabled = false;
