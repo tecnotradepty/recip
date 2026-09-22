@@ -95,6 +95,7 @@
 
         function setPlatform(platform) {
             currentPlatform = platform;
+            urlInput.value = ''; // Limpia el input al cambiar de plataforma
             if (platform === 'tiktok') {
                 btnTiktok.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-blue-600 text-white shadow-sm transition-all';
                 btnPinterest.className = 'flex-1 py-1 text-[11px] font-bold rounded-md bg-transparent text-slate-400 hover:text-white transition-all';
@@ -106,23 +107,55 @@
             }
         }
 
-        document.getElementById('downloadForm').addEventListener('submit', function(e) {
+        document.getElementById('downloadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const result = document.getElementById('result');
             const thumb = document.getElementById('thumb');
+            const downloadBtn = result.querySelector('button');
+            const url = urlInput.value.trim();
             
             btn.innerHTML = '<span class="animate-spin text-lg">⚙</span> Procesando...';
             btn.disabled = true;
             result.classList.add('hidden');
+            downloadBtn.onclick = null; // Reset evento anterior
 
-            setTimeout(() => {
-                btn.innerHTML = '<span>Buscar Archivo</span>';
+            try {
+                if (currentPlatform === 'tiktok') {
+                    // API Pública TikWM
+                    const res = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`);
+                    const data = await res.json();
+                    
+                    if (data.code === 0) {
+                        thumb.src = data.data.cover;
+                        downloadBtn.onclick = () => window.open(data.data.play, '_blank');
+                    } else throw new Error("Error en API de TikTok");
+
+                } else if (currentPlatform === 'pinterest') {
+                    // Proxy CORS para extraer metadata de Pinterest
+                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+                    const data = await res.json();
+                    
+                    // Regex para localizar video y miniatura en el DOM de Pinterest
+                    const videoMatch = data.contents.match(/"contentUrl":"(https:\/\/[^"]+\.mp4)"/);
+                    const imgMatch = data.contents.match(/"thumbnailUrl":"(https:\/\/[^"]+\.jpg)"/);
+                    
+                    if (videoMatch) {
+                        thumb.src = imgMatch ? imgMatch[1] : 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg';
+                        downloadBtn.onclick = () => window.open(videoMatch[1], '_blank');
+                    } else throw new Error("Video de Pinterest no localizado");
+                }
+                
+                btn.innerHTML = '<span>Buscar Video</span>';
                 btn.disabled = false;
-                thumb.src = 'https://raw.githubusercontent.com/tecnotradepty/recip/af715852afd6b95bedf0b5923faa1a0f3410c2bb/768420594_18089021243367758_8129196020523341355_n.jpg'; 
                 result.classList.remove('hidden');
                 result.classList.add('flex');
-            }, 1200);
+
+            } catch (error) {
+                alert("Error al extraer el video. Revisa el enlace o intenta de nuevo.");
+                btn.innerHTML = '<span>Buscar Video</span>';
+                btn.disabled = false;
+            }
         });
     </script>
 </body>
